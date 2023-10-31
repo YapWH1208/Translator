@@ -1,2 +1,2 @@
-# NLP
+# Translator
 NLP Project

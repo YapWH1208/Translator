@@ -1,5 +1,5 @@
 # Chinese-English-Translator
-##Introduction
+**Introduction**
 
 Machine translation, the task of automatically converting text from one language to another, has seen significant advancements with the advent of deep learning models. In this project, the objective is to explore and implement a machine translation system focusing specifically on translating between English and Chinese languages.
 

@@ -56,7 +56,9 @@ The README will conclude with a summary of findings, potential improvements, and
 
 ## Contributors
 
-- [Contributor Name](GitHub Profile Link): Description of their contribution.
+- Yap WeiHerng (@YapWH1208)
+- Lee SinTian (@Tian)
+- Cao Rui (@HawkingC)
 
 ## License
 

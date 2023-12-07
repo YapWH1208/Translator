@@ -125,7 +125,8 @@ def translate(src, model, use_beam=True):
     """用训练好的模型进行预测单句，打印模型翻译结果"""
     sp_chn = chinese_tokenizer_load()
     with torch.no_grad():
-        model.load_state_dict(torch.load(config.model_path))
+        last_model = lastest_checkpoint()
+        model.load_state_dict(torch.load(last_model))
         model.eval()
         src_mask = (src != 0).unsqueeze(-2)
         if use_beam:

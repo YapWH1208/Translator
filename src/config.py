@@ -23,7 +23,7 @@ max_len = 60
 # beam size for bleu
 beam_size = 3
 # Label Smoothing
-use_smoothing = False
+use_smoothing = True
 # NoamOpt
 use_noamopt = True
 
@@ -32,7 +32,7 @@ xml_folder = '../data/xml'
 train_data_path = '../data/json/train.json'
 dev_data_path = '../data/json/dev.json'
 test_data_path = '../data/json/test.json'
-model_path = '../experiment'
+model_path = '../experiment/model'
 log_path = '../experiment/train.log'
 output_path = '../experiment/output.txt'
 

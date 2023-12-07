@@ -20,8 +20,6 @@ def get_corpus():
     with open(en_path, "w", encoding='utf-8') as fen:
         fen.writelines(en_lines)
 
-    # lines of Chinese: 252777
     print("lines of Chinese: ", len(ch_lines))
-    # lines of English: 252777
     print("lines of English: ", len(en_lines))
     print("-------- Get Corpus ! --------")

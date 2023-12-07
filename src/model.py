@@ -133,7 +133,6 @@ class SublayerConnection(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x, sublayer):
-        # 返回Layer Norm和残差连接后结果
         return x + self.dropout(sublayer(self.norm(x)))
 
 

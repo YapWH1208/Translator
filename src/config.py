@@ -18,7 +18,7 @@ save_interval = 1000
 early_stop = 5
 lr = 3e-4
 
-# greed decode的最大句子长度
+# Max Length for greed decoding
 max_len = 60
 # beam size for bleu
 beam_size = 3

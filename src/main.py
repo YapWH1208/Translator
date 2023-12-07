@@ -18,7 +18,6 @@ from get_corpus import get_corpus
 
 class NoamOpt:
     """Optim wrapper that implements rate."""
-
     def __init__(self, model_size, factor, warmup, optimizer):
         self.optimizer = optimizer
         self._step = 0
@@ -52,9 +51,9 @@ def get_std_opt(model):
 def run():
     utils.set_logger(config.log_path)
 
-    #build_dataset(config.xml_folder, config.train_data_path, config.dev_data_path, config.test_data_path, config.max_len)
-    #get_corpus()
-    #tokenizer.run()
+    build_dataset(config.xml_folder, config.train_data_path, config.dev_data_path, config.test_data_path, config.max_len)
+    get_corpus()
+    tokenizer.run()
     train_dataset = MTDataset(config.train_data_path)
     dev_dataset = MTDataset(config.dev_data_path)
     test_dataset = MTDataset(config.test_data_path)
@@ -69,23 +68,26 @@ def run():
 
     logging.info("-------- Get Dataloader! --------")
     
-    # 初始化模型
+    # Initialize Model
     model = make_model(config.src_vocab_size, config.tgt_vocab_size, config.n_layers,
                        config.d_model, config.d_ff, config.n_heads, config.dropout)
     model_path = lastest_checkpoint()
     if model_path is not None:
         logging.info(f"-------- Load Model from {model_path}! --------")
         model.load_state_dict(torch.load(model_path))
-    # 训练
+    
+    # Train
     if config.use_smoothing:
         criterion = LabelSmoothing(size=config.tgt_vocab_size, padding_idx=config.padding_idx, smoothing=0.1)
         criterion.cuda()
     else:
         criterion = torch.nn.CrossEntropyLoss(ignore_index=0, reduction='sum')
+    
     if config.use_noamopt:
         optimizer = get_std_opt(model)
     else:
         optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr)
+
     train(train_dataloader, dev_dataloader, model, criterion, optimizer)
     test(test_dataloader, model, criterion)
 
@@ -107,7 +109,7 @@ def check_opt():
 
 
 def one_sentence_translate(sent, beam_search=True):
-    # 初始化模型
+    # Initialize Model
     model = make_model(config.src_vocab_size, config.tgt_vocab_size, config.n_layers,
                        config.d_model, config.d_ff, config.n_heads, config.dropout)
     BOS = english_tokenizer_load().bos_id()  # 2
@@ -118,7 +120,7 @@ def one_sentence_translate(sent, beam_search=True):
 
 
 def translate_example():
-    """单句翻译示例"""
+    """One sentence translate example"""
     sent = "Are you ok?"
     # tgt: 近期的政策对策很明确：把最低工资提升到足以一个全职工人及其家庭免于贫困的水平，扩大对无子女劳动者的工资所得税减免。
     one_sentence_translate(sent, beam_search=True)

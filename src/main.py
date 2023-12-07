@@ -52,9 +52,9 @@ def get_std_opt(model):
 def run():
     utils.set_logger(config.log_path)
 
-    build_dataset(config.xml_folder, config.train_data_path, config.dev_data_path, config.test_data_path, config.max_len)
-    get_corpus()
-    tokenizer.run()
+    #build_dataset(config.xml_folder, config.train_data_path, config.dev_data_path, config.test_data_path, config.max_len)
+    #get_corpus()
+    #tokenizer.run()
     train_dataset = MTDataset(config.train_data_path)
     dev_dataset = MTDataset(config.dev_data_path)
     test_dataset = MTDataset(config.test_data_path)
@@ -119,9 +119,7 @@ def one_sentence_translate(sent, beam_search=True):
 
 def translate_example():
     """单句翻译示例"""
-    sent = "The near-term policy remedies are clear: raise the minimum wage to a level that will keep a " \
-           "fully employed worker and his or her family out of poverty, and extend the earned-income tax credit " \
-           "to childless workers."
+    sent = "Are you ok?"
     # tgt: 近期的政策对策很明确：把最低工资提升到足以一个全职工人及其家庭免于贫困的水平，扩大对无子女劳动者的工资所得税减免。
     one_sentence_translate(sent, beam_search=True)
 
@@ -129,5 +127,5 @@ def translate_example():
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings('ignore')
-    run()
-    #translate_example()
+    #run()
+    translate_example()

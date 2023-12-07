@@ -26,22 +26,22 @@ def run_epoch(data, model, loss_compute):
 
 
 def train(train_data, dev_data, model, criterion, optimizer):
-    """训练并保存模型"""
-    # 初始化模型在dev集上的最优Loss为一个较大值
+    """Train and save the model"""
+    # Initialize the best loss to a large value
     best_bleu_score = 0.0
     early_stop = config.early_stop
     for epoch in range(1, config.epoch_num + 1):
-        # 模型训练
+        # Train
         model.train()
         train_loss = run_epoch(train_data, model, LossCompute(model.generator, criterion, optimizer))
         logging.info("Epoch: {}, loss: {}".format(epoch, train_loss))
-        # 模型验证
+        # Evaluate
         model.eval()
         dev_loss = run_epoch(dev_data, model, LossCompute(model.generator, criterion))
         bleu_score = evaluate(dev_data, model)
         logging.info('Epoch: {}, Dev loss: {}, Bleu Score: {}'.format(epoch, dev_loss, bleu_score))
 
-        # 如果当前epoch的模型在dev集上的loss优于之前记录的最优loss则保存当前模型，并更新最优loss值
+        # Early Stopping
         if bleu_score > best_bleu_score:
             torch.save(model.state_dict(), config.model_path+"/model_{}.pth".format(epoch))
             best_bleu_score = bleu_score
@@ -56,7 +56,7 @@ def train(train_data, dev_data, model, criterion, optimizer):
 
 
 class LossCompute:
-    """简单的计算损失和进行参数反向传播更新训练的函数"""
+    """Calculate Loss"""
 
     def __init__(self, generator, criterion, opt=None):
         self.generator = generator
@@ -78,7 +78,7 @@ class LossCompute:
 
 
 def evaluate(data, model, mode='dev', use_beam=True):
-    """在data上用训练好的模型进行预测，打印模型翻译结果"""
+    """Evaluate the model"""
     sp_chn = chinese_tokenizer_load()
     trg = []
     res = []
@@ -112,17 +112,17 @@ def evaluate(data, model, mode='dev', use_beam=True):
 
 def test(data, model, criterion):
     with torch.no_grad():
-        # 加载模型
+        # Load the best model
         model.load_state_dict(torch.load(lastest_checkpoint()))
         model.eval()
-        # 开始预测
+        # Predict
         test_loss = run_epoch(data, model, LossCompute(model.generator, criterion))
         bleu_score = evaluate(data, model, 'test')
         logging.info('Test loss: {},  Bleu Score: {}'.format(test_loss, bleu_score))
 
 
 def translate(src, model, use_beam=True):
-    """用训练好的模型进行预测单句，打印模型翻译结果"""
+    """Use the model to translate"""
     sp_chn = chinese_tokenizer_load()
     with torch.no_grad():
         last_model = lastest_checkpoint()

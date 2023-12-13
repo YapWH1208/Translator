@@ -83,9 +83,9 @@ def evaluate(data, model, mode='dev', use_beam=True):
     trg = []
     res = []
     with torch.no_grad():
-        # 在data的英文数据长度上遍历下标
+        # Loop through the english sentence
         for batch in tqdm(data):
-            # 对应的中文句子
+            # corresponding chinese sentence
             cn_sent = batch.trg_text
             src = batch.src
             src_mask = (src != 0).unsqueeze(-2)
